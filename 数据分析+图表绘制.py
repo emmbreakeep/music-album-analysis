@@ -148,7 +148,19 @@ plt.xlabel('专辑类型')
 plt.ylabel('平均评分')
 plt.xticks(index + bar_width,top5_genres_names,rotation=45)
 plt.legend(title='评分体系')
-plt.ylim(0,5.5)#设置y轴范围
+plt.ylim(2.7,2.9)#设置y轴范围
+
+#底部折线0-2
+x_min,x_max = plt.xlim()
+plt.plot([x_min,x_max],[2,2],color='black',linewidth=1)
+plt.plot([x_min,x_min + 0.02*(x_max-x_min)],[2,2.03],color='black',linewidth=1)
+plt.plot([x_max - 0.02*(x_max-x_min),x_max],[2,2.03],color='black',linewidth=1)
+
+#顶部折线3-5
+plt.plot([x_min,x_max],[3,3],color='black',linewidth=1)
+plt.plot([x_min,x_min +0.02*(x_max-x_min)],[3,2.97],color='black',linewidth=1)
+plt.plot([x_max - 0.02*(x_max-x_min),x_max],[3,2.97],color='black',linewidth=1)
+
 plt.tight_layout()
 
 #保存-关闭
