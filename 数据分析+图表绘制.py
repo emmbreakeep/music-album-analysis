@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from brokenaxes import brokenaxes
 
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
@@ -136,30 +137,25 @@ print('\n前五类型在不同评分体系中的平均评分：')
 print(avg_ratings)
 
 #分组柱状图
-plt.figure(figsize=(12,8))
+plt.figure(figsize=(12, 8))
+bax = brokenaxes(ylims=((0,0.001), (2.700,2.900),(4.999,5.000)))
 bar_width = 0.25
 index = np.arange(len(top5_genres_names))
-plt.bar(index,avg_ratings['rolling_stone_critic'],width=bar_width,label='滚石评分')
-plt.bar(index + bar_width,avg_ratings['mtv_critic'],width=bar_width,label='MTV评分')
-plt.bar(index + 2 * bar_width,avg_ratings['music_maniac_critic'],width=bar_width,label='音乐达人评分')
-#图标属性
-plt.title('总销量前五的专辑类型在不同评分体系中的平均评分')
-plt.xlabel('专辑类型')
-plt.ylabel('平均评分')
-plt.xticks(index + bar_width,top5_genres_names,rotation=45)
-plt.legend(title='评分体系')
-plt.ylim(2.7,2.9)#设置y轴范围
 
-#底部折线0-2
-x_min,x_max = plt.xlim()
-plt.plot([x_min,x_max],[2,2],color='black',linewidth=1)
-plt.plot([x_min,x_min + 0.02*(x_max-x_min)],[2,2.03],color='black',linewidth=1)
-plt.plot([x_max - 0.02*(x_max-x_min),x_max],[2,2.03],color='black',linewidth=1)
+bax.bar(index, avg_ratings['rolling_stone_critic'], width=bar_width, label='滚石评分')
+bax.bar(index + bar_width, avg_ratings['mtv_critic'], width=bar_width, label='MTV评分')
+bax.bar(index + 2 * bar_width, avg_ratings['music_maniac_critic'], width=bar_width, label='音乐达人评分')
 
-#顶部折线3-5
-plt.plot([x_min,x_max],[3,3],color='black',linewidth=1)
-plt.plot([x_min,x_min +0.02*(x_max-x_min)],[3,2.97],color='black',linewidth=1)
-plt.plot([x_max - 0.02*(x_max-x_min),x_max],[3,2.97],color='black',linewidth=1)
+bax.set_title('总销量前五的专辑类型在不同评分体系中的平均评分')
+bax.set_xlabel('专辑类型')
+bax.set_ylabel('平均评分')
+
+# 对所有子图设置x轴刻度
+for ax in bax.axs:
+    ax.set_xticks(index + bar_width)
+    ax.set_xticklabels(top5_genres_names, rotation=20)
+
+bax.legend(title='评分体系')
 
 plt.tight_layout()
 
